@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="LogsTable.Views.LogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:LogsTable.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:vm ="clr-namespace:LogsTable.ViewModels"
+             d:DataContext="{d:DesignInstance vm:LogsViewModel}"
+             prism:ViewModelLocator.AutoWireViewModel="True" >
+    <Grid>
+        <!--Таблица вывода базы Логов-->
+        <DataGrid Name="OperationList" SelectionMode="Extended" Grid.Column="1" Grid.Row="1" 
+                  ItemsSource="{Binding Logs}"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  Margin="10,0,0,0"
+                  SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата"  Binding="{Binding Date}" MinWidth="130"/>
+                <DataGridTextColumn Header="Отпр" Binding="{Binding SenderID}" MinWidth="40" />
+                <DataGridTextColumn Header="Получ" Binding="{Binding RecipientID}" MinWidth="40"/>
+                <DataGridTextColumn Header="₽"  Binding="{Binding MoneyAmount}" MinWidth="100" MaxWidth="100" />
+                <DataGridTextColumn Header="?"  Binding="{Binding Successful}" MinWidth="70" MaxWidth="70" />
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Информация" Command="{Binding Info}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <!--Высплывающее окно с информацией о трансфере-->
+        <Popup Name="popupLogInfo" StaysOpen="False" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Scroll" IsOpen="{Binding InfoPop}">
+            <GroupBox Header="Информация" Background="White" FontWeight="Bold" FontSize="14" >
+                <GroupBox.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="#FF350000" Offset="0.5"/>
+                        <GradientStop Color="#FF8B1313" Offset="1"/>
+                    </LinearGradientBrush>
+                </GroupBox.BorderBrush>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Light" Text="Дата: "/>
+                        <TextBlock Text="{Binding SelectedItem.Date, ElementName=OperationList}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Light" Text="Отправитель: "/>
+                        <TextBlock Text="ID: "/>
+                        <TextBlock Text="{Binding Client1.ClientID}"/>
+                        <TextBlock Text=" | "/>
+                        <TextBlock Text="{Binding Client1.FullName}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Light" Text="Получатель: "/>
+                        <TextBlock Text="ID: "/>
+                        <TextBlock Text="{Binding Client2.ClientID}"/>
+                        <TextBlock Text=" | "/>
+                        <TextBlock Text="{Binding Client2.FullName}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Light" Text="Сумма: "/>
+                        <TextBlock Text="{Binding SelectedItem.MoneyAmount, ElementName=OperationList}"/>
+                    </StackPanel>
+                    <Button Content="Ok" IsDefault="True" Margin="5" Command="{Binding InfoOK}"/>
+                </StackPanel>
+            </GroupBox>
+        </Popup>
+    </Grid>
+</UserControl>

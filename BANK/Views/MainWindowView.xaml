@@ -1,0 +1,41 @@
+﻿<Window x:Class="BANK.Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="true"
+        mc:Ignorable="d"
+        xmlns:vm ="clr-namespace:BANK.ViewModels"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
+        Title="{Binding Title}" MinHeight="450" MinWidth="910" Width="910"
+        FontSize="10">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="400" MaxWidth="350" Width="*"/>
+            <ColumnDefinition MinWidth="510" Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ContentControl prism:RegionManager.RegionName="ClientsRegion" Grid.Row="1" Grid.Column="0"/>
+        <ContentControl prism:RegionManager.RegionName="LogsRegion" Grid.Row="1" Grid.Column="1"/>
+        <!--Меню-->
+        <Menu Grid.Row="0" Grid.ColumnSpan="3" Height="25">
+            <MenuItem Header="Создать новую БД" Command="{Binding CreateNewDB}" Height="25"/>
+            <MenuItem Header="Работа системы" Height="25">
+                <MenuItem Header="Добавить клиента" Command="{Binding AddClient}" CommandParameter="NewClientView"/>
+                <MenuItem Header="{Binding Imitation}" Command="{Binding StartImitation}"/>
+            </MenuItem>
+        </Menu>
+
+        <!--<ProgressBar Name="PB" Height="18" Grid.Row="3" IsEnabled="True" Visibility="Visible"/>
+        <TextBlock Name="LoadInfo"  Grid.Column="2" HorizontalAlignment="Left" Margin="10,0,0,0" 
+                   Grid.Row="2" Text="Идет загрузка БД" Visibility ="Hidden" TextWrapping="Wrap" VerticalAlignment="Center"/>-->
+    </Grid>
+</Window>
