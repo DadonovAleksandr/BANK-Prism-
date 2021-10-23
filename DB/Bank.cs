@@ -199,9 +199,8 @@ namespace DB
             {
                 Repay(cID);
                 DB.SaveChanges();
+                ClientListChanged?.Invoke();
             }
-            DB.SaveChanges();
-            ClientListChanged?.Invoke();
         }
         private Client Repay(int cID)
         {
@@ -264,7 +263,7 @@ namespace DB
             else
             {
                 imitationThread.Abort();
-                ImitationOn = on;
+                ImitationOn = false;
             }
         }
         private void StartImitaion()
